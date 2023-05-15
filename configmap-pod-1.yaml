@@ -1,22 +1,22 @@
 apiVersion: v1
-kind: pod
+kind: Pod
 metadata:
-  name: nginx-pod-demo-configmap
-  namespace: default
+  name: nginx-pod-demo-configmap #You can use any name
+  namespace: default #launching in default ns
 spec:
   containers:
-    - name: configmap-pod
-      image: nginx
-      volumeMounts:
+    - name: configmap-pod #you can use anyname
+      image: nginx #this will be pull from dockerhub automatically
+      volumeMounts:     #this is done after the volume below has been created. i.e the volume will be created first
       - name: test-vol
         mountPath: /etc/config-map-data
-        readOnly: true
-  volumes:
+        readOnly: true  #for the pod to read the configmap it is usually on read only
+  volumes:    #(creating volume from the configmaps we created earlier)                  #This volume can be mounted on any container not just this pod. i.e it can be mounted on any othercontainer in another pod
     - name: test-vol
       configMap:
-        name: demo-configmap
+        name: demo-configmap #created previously 
         items:
         - key: test_file_1.txt
           path: test_file_1.txt
         - key: test_file_2.txt
-          path: test_file_2.txt
+          path: test_file_2.txt # Location where the key above is
